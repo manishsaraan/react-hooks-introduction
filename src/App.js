@@ -4,44 +4,39 @@ import CharPicker from "./components/CharPicker";
 import Character from "./components/Character";
 
 const App = props => {
-  const [state, setState] = useState({
-    selectedCharacter: 1,
-    side: "light",
-    destroyed: false
-  });
+  const [destroyed, setDestroyed] = useState(false);
+  const [selectedCharacter, setSelectedCharacter] = useState("1");
+  const [chosenSide, setChosenSite] = useState("light");
 
   const sideHandler = side => {
-    setState({ ...state, side: side });
+    setChosenSite(side);
   };
 
   const charSelectHandler = event => {
-    const charId = event.target.value;
-    setState({ ...state, selectedCharacter: charId });
+    setSelectedCharacter(event.target.value);
   };
 
   const destructionHandler = () => {
-    setState({ ...state, destroyed: true });
+    setDestroyed(true);
   };
-
-  console.log(state);
 
   let content = (
     <React.Fragment>
       <CharPicker
-        side={state}
-        selectedChar={state.selectedCharacter}
+        side={chosenSide}
+        selectedChar={selectedCharacter}
         onCharSelect={charSelectHandler}
       />
-      <Character selectedChar={state.selectedCharacter} />
+      <Character selectedChar={selectedCharacter} />
       <button onClick={sideHandler.bind(this, "light")}>Light Side</button>
       <button onClick={sideHandler.bind(this, "dark")}>Dark Side</button>
-      {state === "dark" && (
+      {chosenSide === "dark" && (
         <button onClick={destructionHandler}>DESTROY!</button>
       )}
     </React.Fragment>
   );
 
-  if (state.destroyed) {
+  if (destroyed) {
     content = <h1>Total destruction!</h1>;
   }
 
